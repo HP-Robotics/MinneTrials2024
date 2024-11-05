@@ -20,6 +20,7 @@ public final class Constants {
     public static final int yuckButtonID = 4;
     public static final int driveButtonID = 1;
     public static final int shooterButtonID = 1;
+    public static final int turnToAprilTagButtonID = 0; // idk what button
   }
 
   public static class SubsystemConstants {

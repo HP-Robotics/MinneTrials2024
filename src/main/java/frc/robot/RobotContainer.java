@@ -4,25 +4,24 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Constants.ControllerConstants;
-import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.SubsystemConstants;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class RobotContainer {
   DriveSubsystem m_driveSubsystem;
   IntakeSubsystem m_intakeSubsystem;
   ShooterSubsystem m_shooterSubsystem;
+  LimelightSubsystem m_limelightSubsystem;
   CommandJoystick m_driveJoystick = new CommandJoystick(ControllerConstants.kDriverControllerPort);
   CommandJoystick m_opJoystick = new CommandJoystick(ControllerConstants.kOperatorControllerPort);
 
@@ -30,6 +29,7 @@ public class RobotContainer {
     m_driveSubsystem = new DriveSubsystem();
     m_intakeSubsystem = new IntakeSubsystem();
     m_shooterSubsystem = new ShooterSubsystem();
+    m_limelightSubsystem = new LimelightSubsystem();
     configureBindings();
   }
 
@@ -52,6 +52,9 @@ public class RobotContainer {
         return 0.5 * Math.pow(m_driveJoystick.getRawAxis(ControllerConstants.DriverRightAxis), 3);
       });
       m_driveSubsystem.setDefaultCommand(drive);
+      // Turn to april tag button
+      m_driveJoystick.button(ControllerConstants.turnToAprilTagButtonID)
+          .whileTrue(m_limelightSubsystem.turnToAprilTagCommand(m_limelightSubsystem.rx));
     }
 
   }

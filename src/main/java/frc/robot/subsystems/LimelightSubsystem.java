@@ -12,12 +12,21 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LimelightSubsystem extends SubsystemBase {
+  DriveSubsystem m_driveSubsystem;
   NetworkTableEntry botpose_blue;
 
   public final Field2d m_field = new Field2d();
+  public double tx = 0;
+  public double ty = 0;
+  public double tz = 0;
+  public double rx = 0;
+  public double ry = 0;
+  public double rz = 0;
 
   public LimelightSubsystem() {
     Shuffleboard.getTab("shuffleboard")
@@ -41,5 +50,21 @@ public class LimelightSubsystem extends SubsystemBase {
     Pose2d m_robotPose = new Pose2d(tx, ty, new Rotation2d());
 
     m_field.setRobotPose(m_robotPose);
+  }
+
+  public Command turnToAprilTagCommand(double rx) {
+    return new RunCommand(() -> {
+      if (rx > 0.05) {
+        m_driveSubsystem.m_leftMotor.set(rx);
+        m_driveSubsystem.m_rightMotor.set(-rx);
+      }
+      if (rx < -0.05) {
+        m_driveSubsystem.m_leftMotor.set(-rx);
+        m_driveSubsystem.m_rightMotor.set(rx);
+      }
+    }).finallyDo(() -> {
+      m_driveSubsystem.m_leftMotor.set(0);
+      m_driveSubsystem.m_rightMotor.set(0);
+    });
   }
 }
