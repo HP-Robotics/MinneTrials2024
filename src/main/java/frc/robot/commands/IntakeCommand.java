@@ -8,6 +8,11 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class IntakeCommand extends Command {
   private IntakeSubsystem m_subsystem;
 
+  public IntakeCommand(IntakeSubsystem subsystem) {
+    m_subsystem = subsystem;
+    addRequirements(m_subsystem);
+  }
+
   @Override
   public void initialize() {
 
@@ -18,8 +23,8 @@ public class IntakeCommand extends Command {
     m_subsystem.runIntake(IntakeConstants.intakeSpeed);
   }
 
-  // @Override
-  public void end() {
+  @Override
+  public void end(boolean interrupted) {
     m_subsystem.runIntake(0.0);
     return;
   }
