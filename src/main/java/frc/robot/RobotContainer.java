@@ -54,7 +54,7 @@ public class RobotContainer {
       m_driveSubsystem.setDefaultCommand(drive);
       // Turn to april tag button
       m_driveJoystick.button(ControllerConstants.turnToAprilTagButtonID)
-          .whileTrue(m_limelightSubsystem.turnToAprilTagCommand(m_limelightSubsystem.rx));
+          .whileTrue(m_limelightSubsystem.turnToAprilTagCommand(m_limelightSubsystem.tx));
     }
 
   }

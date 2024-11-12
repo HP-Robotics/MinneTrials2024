@@ -36,4 +36,8 @@ public final class Constants {
   public static class ShooterConstants {
     public static final double shooterSpeed = 0.1;
   }
+
+  public static class LimelightConstants {
+    public static final double turnToAprilTagAllowableError = 0.03;
+  }
 }
