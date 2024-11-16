@@ -12,6 +12,7 @@ import frc.robot.Constants.SubsystemConstants;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShooterCommand;
+import frc.robot.commands.TurnToAprilTagCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
@@ -54,9 +55,8 @@ public class RobotContainer {
       m_driveSubsystem.setDefaultCommand(drive);
       // Turn to april tag button
       m_driveJoystick.button(ControllerConstants.turnToAprilTagButtonID)
-          .whileTrue(m_limelightSubsystem.turnToAprilTagCommand(m_limelightSubsystem.tx));
+          .whileTrue(new TurnToAprilTagCommand(m_limelightSubsystem, m_driveSubsystem, m_opJoystick));
     }
-
   }
 
   public Command getAutonomousCommand() {
