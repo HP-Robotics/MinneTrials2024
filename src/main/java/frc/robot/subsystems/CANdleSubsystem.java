@@ -180,13 +180,13 @@ public class CANdleSubsystem extends SubsystemBase {
     if (m_toAnimate == null) {
       m_candle.setLEDs(
           (int) (0), 255, 255, 0,
-          (int) (Math.abs(m_driveSubsystem.rightVelocity) * 9),
-          (int) (Math.abs(m_driveSubsystem.leftVelocity) * 134));
+          (int) (Math.abs(m_driveSubsystem.m_rightVelocity) * 9),
+          (int) (Math.abs(m_driveSubsystem.m_leftVelocity) * 134));
       m_candle.animate(m_toAnimate);
     }
     m_candle.setLEDs(
         (int) (0), 0, 0, 0,
-        (int) (Math.abs(m_driveSubsystem.leftVelocity) * 134),
+        (int) (Math.abs(m_driveSubsystem.m_leftVelocity) * 134),
         (67));
     m_candle.animate(m_toAnimate);
     m_candle.modulateVBatOutput(Math.abs(joystick.getRawAxis(1)));
