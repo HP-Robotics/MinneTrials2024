@@ -54,7 +54,7 @@ public class TurnToAprilTagCommand extends Command {
   public void end(boolean interrupted) {
     m_joystick.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0);
     m_driveSubsystem.m_leftMotor.set(0);
-    m_driveSubsystem.m_rightMotor.set(0);
+    // m_driveSubsystem.m_rightMotor.set(0);
   }
 
   // Returns true when the command should end.
