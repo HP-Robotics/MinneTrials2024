@@ -4,9 +4,15 @@
 
 package frc.robot;
 
+import java.time.Instant;
+
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Constants.ControllerConstants;
@@ -15,6 +21,7 @@ import frc.robot.Constants.SubsystemConstants;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShooterCommand;
+import frc.robot.subsystems.CANdleSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -23,6 +30,7 @@ public class RobotContainer {
   DriveSubsystem m_driveSubsystem;
   IntakeSubsystem m_intakeSubsystem;
   ShooterSubsystem m_shooterSubsystem;
+  CANdleSubsystem m_CANdleSubsystem;
   CommandJoystick m_driveJoystick = new CommandJoystick(ControllerConstants.kDriverControllerPort);
   CommandJoystick m_opJoystick = new CommandJoystick(ControllerConstants.kOperatorControllerPort);
 
@@ -30,7 +38,15 @@ public class RobotContainer {
     m_driveSubsystem = new DriveSubsystem();
     m_intakeSubsystem = new IntakeSubsystem();
     m_shooterSubsystem = new ShooterSubsystem();
+    m_CANdleSubsystem = new CANdleSubsystem(m_opJoystick, m_driveSubsystem);
     configureBindings();
+    NamedCommands.registerCommand("launch", new ShooterCommand(m_shooterSubsystem));
+    NamedCommands.registerCommand("startIntake", new InstantCommand(() -> {
+      m_intakeSubsystem.runIntake(Constants.ShooterConstants.shooterSpeed);
+    }));
+    NamedCommands.registerCommand("stopIntake", new InstantCommand(() -> {
+      m_intakeSubsystem.runIntake(0);
+    }));
   }
 
   private void configureBindings() {
@@ -52,6 +68,10 @@ public class RobotContainer {
         return 0.5 * Math.pow(m_driveJoystick.getRawAxis(ControllerConstants.DriverRightAxis), 3);
       });
       m_driveSubsystem.setDefaultCommand(drive);
+    }
+    if (SubsystemConstants.useCANdle) {
+      m_opJoystick.button(5).whileTrue(new RunCommand(m_CANdleSubsystem::incrementAnimation, m_CANdleSubsystem));
+      m_opJoystick.button(6).whileTrue(new RunCommand(m_CANdleSubsystem::decrementAnimation, m_CANdleSubsystem));
     }
 
   }

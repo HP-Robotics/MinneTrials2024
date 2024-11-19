@@ -1,12 +1,17 @@
 package frc.robot;
 
+import com.ctre.phoenix6.hardware.Pigeon2;
+import com.pathplanner.lib.util.ReplanningConfig;
+
 public final class Constants {
 
   public static class IDConstants {
-    public static final int leftDriveMotorID = 11;
+    public static final int leftDriveMotorID = 31;
     public static final int rightDriveMotorID = 12;
-    public static final int intakeMotorID = 31;
+    public static final int intakeMotorID = 30;
     public static final int shooterMotorID = 3;
+    public static final int pigeonID = 57;
+    public static final int CANdleID = 50;
   }
 
   public static class ControllerConstants {
@@ -23,9 +28,10 @@ public final class Constants {
   }
 
   public static class SubsystemConstants {
-    public static final boolean useDrive = false;
-    public static final boolean useIntake = true;
+    public static final boolean useDrive = true;
+    public static final boolean useIntake = false;
     public static final boolean useShooter = false;
+    public static final boolean useCANdle = true;
   }
 
   public static class IntakeConstants {
@@ -34,5 +40,11 @@ public final class Constants {
 
   public static class ShooterConstants {
     public static final double shooterSpeed = 0.1;
+  }
+
+  public static class DriveConstants {
+    public static final double kEncoderResolution = 5;
+    public static final double kWheelRadius = 5;
+    public static final double driveGearRatio = 5;
   }
 }
