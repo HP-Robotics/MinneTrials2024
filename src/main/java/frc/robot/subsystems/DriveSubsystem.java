@@ -28,16 +28,17 @@ public class DriveSubsystem extends SubsystemBase {
   public DifferentialDriveOdometry m_odometry;
   public Rotation2d gyroAngle;
   public Pose2d m_pose;
+  public boolean m_slowMode = false;
   private final Pigeon2 m_gyro = new Pigeon2(IDConstants.pigeonID, "CANivore");
-  public double leftVelocity = 0.0; // left velocity
-  public double rightVelocity = 0.0; // right velocity
+  public double m_leftVelocity = 0.0; // left velocity
+  public double m_rightVelocity = 0.0; // right velocity
 
   public DriveSubsystem() {
     m_leftMotor = new TalonFX(IDConstants.leftDriveMotorID);
-    // m_rightMotor = new TalonFX(IDConstants.rightDriveMotorID);
+    m_rightMotor = new TalonFX(IDConstants.rightDriveMotorID);
 
     m_leftMotor.setInverted(false);
-    // m_rightMotor.setInverted(true);
+    m_rightMotor.setInverted(true);
     try {
       m_config = new ReplanningConfig(true, true);
     } catch (Exception e) {
@@ -89,16 +90,19 @@ public class DriveSubsystem extends SubsystemBase {
   public void drive(ChassisSpeeds chassisSpeeds) {
     DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(27));
     DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(chassisSpeeds);
-    leftVelocity = wheelSpeeds.leftMetersPerSecond; // left velocity
-    rightVelocity = wheelSpeeds.rightMetersPerSecond; // right velocity
-    m_leftMotor.set(leftVelocity);
-    // m_rightMotor.set(rightVelocity);
+    drive(wheelSpeeds.leftMetersPerSecond, wheelSpeeds.rightMetersPerSecond);
   }
 
-  public void drive(double Left, double Right) {
-    leftVelocity = Left;
-    rightVelocity = Right;
-    m_leftMotor.set(leftVelocity);
+  public void drive(double leftSpeed, double rightSpeed) {
+    m_leftVelocity = leftSpeed;
+    m_rightVelocity = rightSpeed;
+    if (m_slowMode) {
+      m_leftVelocity *= DriveConstants.slowSpeedMultiplier;
+      m_rightVelocity *= DriveConstants.slowSpeedMultiplier;
+    }
+
+    m_leftMotor.set(m_leftVelocity);
+    m_rightMotor.set(m_rightVelocity);
   }
 
   // encoder speed to meters per second
