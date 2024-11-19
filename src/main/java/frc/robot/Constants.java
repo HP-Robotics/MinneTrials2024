@@ -6,7 +6,7 @@ public final class Constants {
     public static final int leftDriveMotorID = 11;
     public static final int rightDriveMotorID = 12;
     public static final int intakeMotorID = 31;
-    public static final int shooterMotorID = 3;
+    public static final int shooterMotorID = 32;
   }
 
   public static class ControllerConstants {
@@ -24,8 +24,8 @@ public final class Constants {
   }
 
   public static class SubsystemConstants {
-    public static final boolean useDrive = true;
-    public static final boolean useIntake = true;
+    public static final boolean useDrive = false;
+    public static final boolean useIntake = false;
     public static final boolean useShooter = true;
   }
 
@@ -34,7 +34,7 @@ public final class Constants {
   }
 
   public static class ShooterConstants {
-    public static final double shooterSpeed = 0.1;
+    public static final double shooterSpeed = 0.7;
   }
 
   public static class LimelightConstants {
