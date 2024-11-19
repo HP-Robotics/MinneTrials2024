@@ -1,11 +1,7 @@
 package frc.robot.subsystems;
 
-import java.util.function.Consumer;
-
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.InvertedValue;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.ReplanningConfig;
 
@@ -20,7 +16,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.IDConstants;
 import com.pathplanner.lib.commands.FollowPathCommand;
@@ -28,9 +23,11 @@ import com.pathplanner.lib.controllers.PPLTVController;
 
 public class DriveSubsystem extends SubsystemBase {
   public TalonFX m_leftMotor;
-  // public TalonFX m_rightMotor;
+  public TalonFX m_rightMotor;
   public ReplanningConfig m_config;
   public DifferentialDriveOdometry m_odometry;
+  public Rotation2d gyroAngle;
+  public Pose2d m_pose;
   private final Pigeon2 m_gyro = new Pigeon2(IDConstants.pigeonID, "CANivore");
   public double leftVelocity = 0.0; // left velocity
   public double rightVelocity = 0.0; // right velocity
@@ -47,13 +44,21 @@ public class DriveSubsystem extends SubsystemBase {
       // Handle exception as needed
       e.printStackTrace();
     }
-    /*
-     * DifferentialDriveOdometry m_odometry = new DifferentialDriveOdometry(
-     * m_gyro.getRotation2d(),
-     * ticksToMeters(m_leftMotor.getRotorPosition().getValue()),
-     * ticksToMeters(m_rightMotor.getRotorPosition().getValue()),
-     * new Pose2d(5.0, 13.5, new Rotation2d()));
-     */
+
+    m_odometry = new DifferentialDriveOdometry(
+        m_gyro.getRotation2d(),
+        getLeftDistanceMeters(),
+        getRightDistanceMeters(),
+        new Pose2d(5.0, 13.5, new Rotation2d()));
+
+  }
+
+  @Override
+  public void periodic() {
+    gyroAngle = m_gyro.getRotation2d();
+
+    // Update the robot pose
+    m_pose = m_odometry.update(gyroAngle, getLeftDistanceMeters(), getRightDistanceMeters());
   }
 
   public Command followPathCommand(String pathName) {
@@ -113,6 +118,14 @@ public class DriveSubsystem extends SubsystemBase {
 
   public ChassisSpeeds getRobotRelativeSpeeds() {
     return null;
+  }
+
+  public double getLeftDistanceMeters() {
+    return ticksToMeters(m_leftMotor.getRotorPosition().getValue());
+  }
+
+  public double getRightDistanceMeters() {
+    return ticksToMeters(m_rightMotor.getRotorPosition().getValue());
   }
 
 }
