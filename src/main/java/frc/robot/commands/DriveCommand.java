@@ -31,8 +31,7 @@ public class DriveCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_driveSubsystem.m_leftMotor.set(m_leftAxis.getAsDouble());
-    m_driveSubsystem.m_rightMotor.set(m_rightAxis.getAsDouble());
+    m_driveSubsystem.drive(m_leftAxis.getAsDouble(), m_rightAxis.getAsDouble());
 
   }
 
