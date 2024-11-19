@@ -25,10 +25,12 @@ public final class Constants {
     public static final int yuckButtonID = 4;
     public static final int driveButtonID = 1;
     public static final int shooterButtonID = 1;
+    public static final int turnToAprilTagButtonID = 2; // idk what button
   }
 
   public static class SubsystemConstants {
     public static final boolean useDrive = true;
+
     public static final boolean useIntake = false;
     public static final boolean useShooter = false;
     public static final boolean useCANdle = true;
@@ -46,5 +48,9 @@ public final class Constants {
     public static final double kEncoderResolution = 5;
     public static final double kWheelRadius = 5;
     public static final double driveGearRatio = 5;
+  }
+
+  public static class LimelightConstants {
+    public static final double turnToAprilTagAllowableError = 5; // For testing
   }
 }

@@ -12,13 +12,15 @@ import frc.robot.Constants.IDConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ShooterSubsystem. */
-  TalonFX m_motor = new TalonFX(IDConstants.shooterMotorID);
+  TalonFX m_topMotor = new TalonFX(IDConstants.shooterMotorID);
+  TalonFX m_bottomMotor = new TalonFX(IDConstants.shooterMotorID+1); // CHANGE
 
   public ShooterSubsystem() {
   }
 
   public void runShooter(double output) {
-    m_motor.setControl(new DutyCycleOut(output));
+    m_topMotor.setControl(new DutyCycleOut(output));
+    m_bottomMotor.setControl(new DutyCycleOut(-output));
   }
 
   @Override
