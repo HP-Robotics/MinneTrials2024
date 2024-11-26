@@ -49,6 +49,7 @@ public final class Constants {
     public static final double kEncoderResolution = 5;
     public static final double kWheelRadius = 5;
     public static final double driveGearRatio = 5;
+    public static final double slowSpeedMultiplier = 0.3;
   }
 
   public static class LimelightConstants {

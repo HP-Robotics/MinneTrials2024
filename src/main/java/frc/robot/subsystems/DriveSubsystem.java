@@ -1,11 +1,7 @@
 package frc.robot.subsystems;
 
-import java.util.function.Consumer;
-
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.InvertedValue;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.ReplanningConfig;
 
@@ -20,7 +16,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.IDConstants;
 import com.pathplanner.lib.commands.FollowPathCommand;
@@ -31,29 +26,40 @@ public class DriveSubsystem extends SubsystemBase {
   public TalonFX m_rightMotor;
   public ReplanningConfig m_config;
   public DifferentialDriveOdometry m_odometry;
+  public Rotation2d gyroAngle;
+  public Pose2d m_pose;
+  public boolean m_slowMode = false;
   private final Pigeon2 m_gyro = new Pigeon2(IDConstants.pigeonID, "CANivore");
-  public double leftVelocity = 0.0; // left velocity
-  public double rightVelocity = 0.0; // right velocity
+  public double m_leftVelocity = 0.0; // left velocity
+  public double m_rightVelocity = 0.0; // right velocity
 
   public DriveSubsystem() {
     m_leftMotor = new TalonFX(IDConstants.leftDriveMotorID);
     m_rightMotor = new TalonFX(IDConstants.rightDriveMotorID);
 
-    m_leftMotor.setInverted(true);
-    m_rightMotor.setInverted(false);
+    m_leftMotor.setInverted(false);
+    m_rightMotor.setInverted(true);
     try {
       m_config = new ReplanningConfig(true, true);
     } catch (Exception e) {
       // Handle exception as needed
       e.printStackTrace();
     }
-    
-    DifferentialDriveOdometry m_odometry = new DifferentialDriveOdometry(
-    m_gyro.getRotation2d(),
-    ticksToMeters(m_leftMotor.getRotorPosition().getValue()),
-    ticksToMeters(m_rightMotor.getRotorPosition().getValue()),
-    new Pose2d(5.0, 13.5, new Rotation2d()));
-    
+
+    m_odometry = new DifferentialDriveOdometry(
+        m_gyro.getRotation2d(),
+        getLeftDistanceMeters(),
+        getRightDistanceMeters(),
+        new Pose2d(5.0, 13.5, new Rotation2d()));
+
+  }
+
+  @Override
+  public void periodic() {
+    gyroAngle = m_gyro.getRotation2d();
+
+    // Update the robot pose
+    m_pose = m_odometry.update(gyroAngle, getLeftDistanceMeters(), getRightDistanceMeters());
   }
 
   public Command followPathCommand(String pathName) {
@@ -84,16 +90,19 @@ public class DriveSubsystem extends SubsystemBase {
   public void drive(ChassisSpeeds chassisSpeeds) {
     DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(27));
     DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(chassisSpeeds);
-    leftVelocity = wheelSpeeds.leftMetersPerSecond; // left velocity
-    rightVelocity = wheelSpeeds.rightMetersPerSecond; // right velocity
-    m_leftMotor.set(leftVelocity);
-    m_rightMotor.set(rightVelocity);
+    drive(wheelSpeeds.leftMetersPerSecond, wheelSpeeds.rightMetersPerSecond);
   }
 
-  public void drive(double Left, double Right) {
-    leftVelocity = Left;
-    rightVelocity = Right;
-    m_leftMotor.set(leftVelocity);
+  public void drive(double leftSpeed, double rightSpeed) {
+    m_leftVelocity = leftSpeed;
+    m_rightVelocity = rightSpeed;
+    if (m_slowMode) {
+      m_leftVelocity *= DriveConstants.slowSpeedMultiplier;
+      m_rightVelocity *= DriveConstants.slowSpeedMultiplier;
+    }
+
+    m_leftMotor.set(m_leftVelocity);
+    m_rightMotor.set(m_rightVelocity);
   }
 
   // encoder speed to meters per second
@@ -113,6 +122,14 @@ public class DriveSubsystem extends SubsystemBase {
 
   public ChassisSpeeds getRobotRelativeSpeeds() {
     return null;
+  }
+
+  public double getLeftDistanceMeters() {
+    return ticksToMeters(m_leftMotor.getRotorPosition().getValue());
+  }
+
+  public double getRightDistanceMeters() {
+    return ticksToMeters(m_rightMotor.getRotorPosition().getValue());
   }
 
 }

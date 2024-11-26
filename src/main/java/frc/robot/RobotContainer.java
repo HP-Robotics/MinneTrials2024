@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.SubsystemConstants;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.fireCommandDotEdu;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.CANdleSubsystem;
 import frc.robot.commands.TurnToAprilTagCommand;
@@ -28,6 +28,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.commands.IntakeCommand;
 
 public class RobotContainer {
   DriveSubsystem m_driveSubsystem;
@@ -63,6 +64,7 @@ public class RobotContainer {
           .whileTrue(new IntakeCommand(m_intakeSubsystem));
       // Yuck button
       m_driveJoystick.button(ControllerConstants.yuckButtonID).whileTrue(m_intakeSubsystem.yuckCommand());
+      m_driveJoystick.button(3).whileTrue(new fireCommandDotEdu(m_intakeSubsystem));
     }
     if (SubsystemConstants.useShooter) {
       // Shooter button
@@ -85,7 +87,13 @@ public class RobotContainer {
     if (SubsystemConstants.useCANdle) {
       m_opJoystick.button(5).whileTrue(new RunCommand(m_CANdleSubsystem::incrementAnimation, m_CANdleSubsystem));
       m_opJoystick.button(6).whileTrue(new RunCommand(m_CANdleSubsystem::decrementAnimation, m_CANdleSubsystem));
+      m_opJoystick.button(7).onTrue(m_CANdleSubsystem.IntakeLights());
+      m_opJoystick.button(7).onFalse(m_CANdleSubsystem.LightsOut());
     }
+
+    m_driveJoystick.button(3).onTrue(new InstantCommand(() -> {
+      m_driveSubsystem.m_slowMode = !m_driveSubsystem.m_slowMode;
+    }));
   }
 
   public Command getAutonomousCommand() {

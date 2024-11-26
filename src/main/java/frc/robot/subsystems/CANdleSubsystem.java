@@ -22,6 +22,9 @@ import com.ctre.phoenix.led.TwinkleAnimation;
 import com.ctre.phoenix.led.TwinkleAnimation.TwinklePercent;
 import com.ctre.phoenix.led.TwinkleOffAnimation;
 import com.ctre.phoenix.led.TwinkleOffAnimation.TwinkleOffPercent;
+
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Constants.IDConstants;
@@ -29,10 +32,11 @@ import frc.robot.Constants.IDConstants;
 public class CANdleSubsystem extends SubsystemBase {
   /** Creates a new CANdleSubsystem. */
   public CANdle m_candle = new CANdle(IDConstants.CANdleID, "rio");
-  public int LedCount = 307;
+  public int LedCount = 68;
   public CommandJoystick joystick;
   public Animation m_toAnimate = null;
   public DriveSubsystem m_driveSubsystem;
+  public boolean HaveBeamBreak;
 
   public enum AnimationTypes {
     ColorFlow,
@@ -177,18 +181,41 @@ public class CANdleSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    if (m_toAnimate == null) {
-      m_candle.setLEDs(
-          (int) (0), 255, 255, 0,
-          (int) (Math.abs(m_driveSubsystem.rightVelocity) * 9),
-          (int) (Math.abs(m_driveSubsystem.leftVelocity) * 134));
-      m_candle.animate(m_toAnimate);
+    /**
+     * if (m_toAnimate == null) {
+     * m_candle.setLEDs(
+     * (int) (0), 255, 255, 0,
+     * (int) (Math.abs(m_driveSubsystem.m_rightVelocity) * 9),
+     * (int) (Math.abs(m_driveSubsystem.m_leftVelocity) * 134));
+     * m_candle.animate(m_toAnimate);
+     * }
+     */
+    if (HaveBeamBreak == true) {
+      m_candle.setLEDs(0, 255, 0);
+    } else {
+      m_candle.setLEDs(0, 0, 0);
     }
-    m_candle.setLEDs(
-        (int) (0), 0, 0, 0,
-        (int) (Math.abs(m_driveSubsystem.leftVelocity) * 134),
-        (67));
-    m_candle.animate(m_toAnimate);
-    m_candle.modulateVBatOutput(Math.abs(joystick.getRawAxis(1)));
+    /**
+     * m_candle.setLEDs(
+     * (int) (0), 0, 0, 0,
+     * (int) (Math.abs(m_driveSubsystem.m_leftVelocity) * 134),
+     * (68));
+     * m_candle.animate(m_toAnimate);
+     * m_candle.modulateVBatOutput(Math.abs(joystick.getRawAxis(1)));
+     */
   }
+
+  public Command IntakeLights() { // turns lights green when the intake is running
+    return new InstantCommand(() -> {
+      System.out.println("this works?");
+      HaveBeamBreak = true;
+    });
+  }
+
+  public Command LightsOut() { // turns lights off
+    return new InstantCommand(() -> {
+      HaveBeamBreak = false;
+    });
+  }
+
 }

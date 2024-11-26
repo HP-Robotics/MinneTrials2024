@@ -1,15 +1,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.BeamBreak;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.BeamBreak;
+import frc.robot.commands.IntakeCommand;
 
-public class IntakeCommand extends Command {
+public class fireCommandDotEdu extends Command {
   private IntakeSubsystem m_subsystem;
 
-  public IntakeCommand(IntakeSubsystem subsystem) {
+  public fireCommandDotEdu(IntakeSubsystem subsystem) {
     m_subsystem = subsystem;
     addRequirements(m_subsystem);
   }
@@ -32,10 +33,6 @@ public class IntakeCommand extends Command {
 
   @Override
   public boolean isFinished() {
-    if (m_subsystem.m_beamBreak.beamBroken() == true) {
-      return true;
-    } else {
-      return false;
-    }
+    return false;
   }
 }
