@@ -19,6 +19,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public IntakeSubsystem() {
     intakeTable.getEntry("Intake Setpoint").getDouble(IntakeConstants.intakeSpeed);
+    m_motor.setInverted(false);
   }
 
   public void periodic() {

@@ -22,8 +22,8 @@ public class ShooterCommand extends Command {
     m_subsystem.runShooter(ShooterConstants.shooterSpeed);
   }
 
-  // @Override
-  public void end() {
+  @Override
+  public void end(boolean interrupted) {
     m_subsystem.runShooter(0.0);
     return;
   }

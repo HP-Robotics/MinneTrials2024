@@ -28,7 +28,7 @@ import com.pathplanner.lib.controllers.PPLTVController;
 
 public class DriveSubsystem extends SubsystemBase {
   public TalonFX m_leftMotor;
-  // public TalonFX m_rightMotor;
+  public TalonFX m_rightMotor;
   public ReplanningConfig m_config;
   public DifferentialDriveOdometry m_odometry;
   private final Pigeon2 m_gyro = new Pigeon2(IDConstants.pigeonID, "CANivore");
@@ -37,23 +37,23 @@ public class DriveSubsystem extends SubsystemBase {
 
   public DriveSubsystem() {
     m_leftMotor = new TalonFX(IDConstants.leftDriveMotorID);
-    // m_rightMotor = new TalonFX(IDConstants.rightDriveMotorID);
+    m_rightMotor = new TalonFX(IDConstants.rightDriveMotorID);
 
-    m_leftMotor.setInverted(false);
-    // m_rightMotor.setInverted(true);
+    m_leftMotor.setInverted(true);
+    m_rightMotor.setInverted(false);
     try {
       m_config = new ReplanningConfig(true, true);
     } catch (Exception e) {
       // Handle exception as needed
       e.printStackTrace();
     }
-    /*
-     * DifferentialDriveOdometry m_odometry = new DifferentialDriveOdometry(
-     * m_gyro.getRotation2d(),
-     * ticksToMeters(m_leftMotor.getRotorPosition().getValue()),
-     * ticksToMeters(m_rightMotor.getRotorPosition().getValue()),
-     * new Pose2d(5.0, 13.5, new Rotation2d()));
-     */
+    
+    DifferentialDriveOdometry m_odometry = new DifferentialDriveOdometry(
+    m_gyro.getRotation2d(),
+    ticksToMeters(m_leftMotor.getRotorPosition().getValue()),
+    ticksToMeters(m_rightMotor.getRotorPosition().getValue()),
+    new Pose2d(5.0, 13.5, new Rotation2d()));
+    
   }
 
   public Command followPathCommand(String pathName) {
@@ -87,7 +87,7 @@ public class DriveSubsystem extends SubsystemBase {
     leftVelocity = wheelSpeeds.leftMetersPerSecond; // left velocity
     rightVelocity = wheelSpeeds.rightMetersPerSecond; // right velocity
     m_leftMotor.set(leftVelocity);
-    // m_rightMotor.set(rightVelocity);
+    m_rightMotor.set(rightVelocity);
   }
 
   public void drive(double Left, double Right) {
