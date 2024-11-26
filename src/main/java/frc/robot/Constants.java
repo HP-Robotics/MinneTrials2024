@@ -9,7 +9,8 @@ public final class Constants {
     public static final int leftDriveMotorID = 31;
     public static final int rightDriveMotorID = 12;
     public static final int intakeMotorID = 30;
-    public static final int shooterMotorID = 3;
+    public static final int topMotorID = 3;
+    public static final int bottomMotorID = 4;
     public static final int pigeonID = 57;
     public static final int CANdleID = 50;
   }
@@ -21,7 +22,7 @@ public final class Constants {
     public static final int DriverLeftAxis = 1;
     public static final int DriverRightAxis = 5;
 
-    public static final int intakeAxisID = 3; // right trigger
+    public static final int intakeAxisID = 4; // right trigger
     public static final int yuckButtonID = 4;
     public static final int driveButtonID = 1;
     public static final int shooterButtonID = 1;
@@ -29,11 +30,11 @@ public final class Constants {
   }
 
   public static class SubsystemConstants {
-    public static final boolean useDrive = true;
+    public static final boolean useDrive = false;
 
-    public static final boolean useIntake = false;
-    public static final boolean useShooter = false;
-    public static final boolean useCANdle = true;
+    public static final boolean useIntake = true;
+    public static final boolean useShooter = true;
+    public static final boolean useCANdle = false;
   }
 
   public static class IntakeConstants {

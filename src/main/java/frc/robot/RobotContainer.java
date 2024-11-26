@@ -42,7 +42,9 @@ public class RobotContainer {
     m_driveSubsystem = new DriveSubsystem();
     m_intakeSubsystem = new IntakeSubsystem();
     m_shooterSubsystem = new ShooterSubsystem();
-    m_CANdleSubsystem = new CANdleSubsystem(m_opJoystick, m_driveSubsystem);
+    if (SubsystemConstants.useCANdle) {
+      m_CANdleSubsystem = new CANdleSubsystem(m_opJoystick, m_driveSubsystem);
+    }
     m_limelightSubsystem = new LimelightSubsystem();
     configureBindings();
     NamedCommands.registerCommand("launch", new ShooterCommand(m_shooterSubsystem));
@@ -64,13 +66,15 @@ public class RobotContainer {
     }
     if (SubsystemConstants.useShooter) {
       // Shooter button
-      m_opJoystick.button(ControllerConstants.shooterButtonID).whileTrue(new ShooterCommand(m_shooterSubsystem));
+      m_driveJoystick.button(ControllerConstants.shooterButtonID).whileTrue(new ShooterCommand(m_shooterSubsystem));
     }
     if (SubsystemConstants.useDrive) {
       DriveCommand drive = new DriveCommand(m_driveSubsystem, () -> {
-        return 0.5 * Math.pow(m_driveJoystick.getRawAxis(ControllerConstants.DriverLeftAxis), 3);
+        return 0.5 * Math.pow(m_driveJoystick.getRawAxis(ControllerConstants.DriverLeftAxis), 2)
+            * Math.signum(m_driveJoystick.getRawAxis(ControllerConstants.DriverLeftAxis));
       }, () -> {
-        return 0.5 * Math.pow(m_driveJoystick.getRawAxis(ControllerConstants.DriverRightAxis), 3);
+        return 0.5 * Math.pow(m_driveJoystick.getRawAxis(ControllerConstants.DriverRightAxis), 2)
+            * Math.signum(m_driveJoystick.getRawAxis(ControllerConstants.DriverLeftAxis));
       });
       m_driveSubsystem.setDefaultCommand(drive);
       // Turn to april tag button
