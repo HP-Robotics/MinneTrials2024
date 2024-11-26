@@ -81,6 +81,8 @@ public class RobotContainer {
     if (SubsystemConstants.useCANdle) {
       m_opJoystick.button(5).whileTrue(new RunCommand(m_CANdleSubsystem::incrementAnimation, m_CANdleSubsystem));
       m_opJoystick.button(6).whileTrue(new RunCommand(m_CANdleSubsystem::decrementAnimation, m_CANdleSubsystem));
+      m_opJoystick.button(7).onTrue(m_CANdleSubsystem.IntakeLights());
+      m_opJoystick.button(7).onFalse(m_CANdleSubsystem.LightsOut());
     }
 
     m_driveJoystick.button(3).onTrue(new InstantCommand(() -> {
