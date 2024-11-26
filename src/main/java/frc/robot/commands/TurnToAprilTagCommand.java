@@ -39,7 +39,7 @@ public class TurnToAprilTagCommand extends Command {
       if (m_subsystem.m_targetAprilTagID == 0 || m_subsystem.m_targetAprilTagID == 5) {
         double speed = turnPID.calculate(m_subsystem.tx, 0);
         m_driveSubsystem.m_leftMotor.set(speed);
-        m_driveSubsystem.m_rightMotor.set(-speed);
+        // m_driveSubsystem.m_rightMotor.set(-speed);
       }
       if (Math.abs(m_subsystem.tx) < LimelightConstants.turnToAprilTagAllowableError) {
         m_joystick.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0.5);
@@ -54,7 +54,7 @@ public class TurnToAprilTagCommand extends Command {
   public void end(boolean interrupted) {
     m_joystick.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0);
     m_driveSubsystem.m_leftMotor.set(0);
-    m_driveSubsystem.m_rightMotor.set(0);
+    // m_driveSubsystem.m_rightMotor.set(0);
   }
 
   // Returns true when the command should end.
