@@ -48,9 +48,12 @@ public class RobotContainer {
     }
     if (SubsystemConstants.useDrive) {
       DriveCommand drive = new DriveCommand(m_driveSubsystem, () -> {
-        return 0.5 * Math.pow(m_driveJoystick.getRawAxis(ControllerConstants.DriverLeftAxis), 3);
+        return 0.5 * Math.pow(m_driveJoystick.getRawAxis(ControllerConstants.DriverLeftAxis), 2)
+            * Math.round(m_driveJoystick.getRawAxis(ControllerConstants.DriverLeftAxis)); // Square axis and keep the
+                                                                                          // posistive/negative value
       }, () -> {
-        return 0.5 * Math.pow(m_driveJoystick.getRawAxis(ControllerConstants.DriverRightAxis), 3);
+        return 0.5 * Math.pow(m_driveJoystick.getRawAxis(ControllerConstants.DriverRightAxis), 2)
+            * Math.round(m_driveJoystick.getRawAxis(ControllerConstants.DriverLeftAxis));
       });
       m_driveSubsystem.setDefaultCommand(drive);
       // Turn to april tag button

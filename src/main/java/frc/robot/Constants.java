@@ -6,7 +6,8 @@ public final class Constants {
     public static final int leftDriveMotorID = 11;
     public static final int rightDriveMotorID = 12;
     public static final int intakeMotorID = 31;
-    public static final int shooterMotorID = 3;
+    public static final int topMotorID = 3;
+    public static final int bottomMotorID = 4;
   }
 
   public static class ControllerConstants {
@@ -16,7 +17,7 @@ public final class Constants {
     public static final int DriverLeftAxis = 1;
     public static final int DriverRightAxis = 5;
 
-    public static final int intakeAxisID = 3; // right trigger
+    public static final int intakeAxisID = 4; // right trigger
     public static final int yuckButtonID = 4;
     public static final int driveButtonID = 1;
     public static final int shooterButtonID = 1;
