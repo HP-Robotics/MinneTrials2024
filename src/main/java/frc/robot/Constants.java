@@ -6,11 +6,11 @@ import com.pathplanner.lib.util.ReplanningConfig;
 public final class Constants {
 
   public static class IDConstants {
-    public static final int leftDriveMotorID = 31;
+    public static final int leftDriveMotorID = 11;
     public static final int rightDriveMotorID = 12;
-    public static final int intakeMotorID = 30;
-    public static final int topMotorID = 3;
-    public static final int bottomMotorID = 4;
+    public static final int intakeMotorID = 31;
+    public static final int topMotorID = 21;
+    public static final int bottomMotorID = 22;
     public static final int pigeonID = 57;
     public static final int CANdleID = 50;
   }
@@ -42,7 +42,7 @@ public final class Constants {
   }
 
   public static class ShooterConstants {
-    public static final double shooterSpeed = 0.1;
+    public static final double shooterSpeed = 0.7;
   }
 
   public static class DriveConstants {

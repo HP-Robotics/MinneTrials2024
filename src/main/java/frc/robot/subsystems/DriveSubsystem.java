@@ -29,7 +29,7 @@ public class DriveSubsystem extends SubsystemBase {
   public Rotation2d gyroAngle;
   public Pose2d m_pose;
   public boolean m_slowMode = false;
-  private final Pigeon2 m_gyro = new Pigeon2(IDConstants.pigeonID, "CANivore");
+  private final Pigeon2 m_gyro = new Pigeon2(IDConstants.pigeonID);
   public double m_leftVelocity = 0.0; // left velocity
   public double m_rightVelocity = 0.0; // right velocity
 

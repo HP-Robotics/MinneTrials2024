@@ -19,8 +19,8 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void runShooter(double output) {
-    m_topMotor.setControl(new DutyCycleOut(output));
-    m_bottomMotor.setControl(new DutyCycleOut(-output));
+    m_topMotor.setControl(new DutyCycleOut(-output));// TODO: invert
+    m_bottomMotor.setControl(new DutyCycleOut(output));
   }
 
   @Override
