@@ -16,10 +16,12 @@ public class ShooterSubsystem extends SubsystemBase {
   TalonFX m_bottomMotor = new TalonFX(IDConstants.bottomMotorID);
 
   public ShooterSubsystem() {
+    m_topMotor.setInverted(true);
+    m_bottomMotor.setInverted(false);
   }
 
   public void runShooter(double output) {
-    m_topMotor.setControl(new DutyCycleOut(-output));// TODO: invert
+    m_topMotor.setControl(new DutyCycleOut(output));
     m_bottomMotor.setControl(new DutyCycleOut(output));
   }
 

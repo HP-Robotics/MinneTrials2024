@@ -1,8 +1,5 @@
 package frc.robot;
 
-import com.ctre.phoenix6.hardware.Pigeon2;
-import com.pathplanner.lib.util.ReplanningConfig;
-
 public final class Constants {
 
   public static class IDConstants {
@@ -30,7 +27,7 @@ public final class Constants {
   }
 
   public static class SubsystemConstants {
-    public static final boolean useDrive = false;
+    public static final boolean useDrive = true;
 
     public static final boolean useIntake = true;
     public static final boolean useShooter = true;

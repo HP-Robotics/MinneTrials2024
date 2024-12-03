@@ -4,18 +4,12 @@
 
 package frc.robot;
 
-import java.time.Instant;
-
 import com.pathplanner.lib.auto.NamedCommands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.SubsystemConstants;
@@ -64,14 +58,16 @@ public class RobotContainer {
           .whileTrue(new IntakeCommand(m_intakeSubsystem));
       // Yuck button
       m_driveJoystick.button(ControllerConstants.yuckButtonID).whileTrue(m_intakeSubsystem.yuckCommand());
-      m_driveJoystick.button(3).whileTrue(new fireCommandDotEdu(m_intakeSubsystem));
+      m_driveJoystick.button(3).whileTrue(new fireCommandDotEdu(m_intakeSubsystem)); // TODO: Make it a constant
     }
     if (SubsystemConstants.useShooter) {
       // Shooter button
+      // TODO: change if beambreak exists
       m_driveJoystick.button(ControllerConstants.shooterButtonID).whileTrue(new ShooterCommand(m_shooterSubsystem));
     }
     if (SubsystemConstants.useDrive) {
       DriveCommand drive = new DriveCommand(m_driveSubsystem, () -> {
+        // TODO: Make the 0.5 a constant
         return 0.5 * Math.pow(m_driveJoystick.getRawAxis(ControllerConstants.DriverLeftAxis), 2)
             * Math.signum(m_driveJoystick.getRawAxis(ControllerConstants.DriverLeftAxis));
       }, () -> {
@@ -82,6 +78,9 @@ public class RobotContainer {
       // Turn to april tag button
       m_driveJoystick.button(ControllerConstants.turnToAprilTagButtonID)
           .whileTrue(new TurnToAprilTagCommand(m_limelightSubsystem, m_driveSubsystem, m_opJoystick));
+      m_driveJoystick.button(3).onTrue(new InstantCommand(() -> {
+        m_driveSubsystem.m_slowMode = !m_driveSubsystem.m_slowMode;
+      }));
     }
 
     if (SubsystemConstants.useCANdle) {
@@ -90,10 +89,6 @@ public class RobotContainer {
       m_opJoystick.button(7).onTrue(m_CANdleSubsystem.IntakeLights());
       m_opJoystick.button(7).onFalse(m_CANdleSubsystem.LightsOut());
     }
-
-    m_driveJoystick.button(3).onTrue(new InstantCommand(() -> {
-      m_driveSubsystem.m_slowMode = !m_driveSubsystem.m_slowMode;
-    }));
   }
 
   public Command getAutonomousCommand() {
