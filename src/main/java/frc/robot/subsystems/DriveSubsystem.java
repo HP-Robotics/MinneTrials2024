@@ -37,8 +37,8 @@ public class DriveSubsystem extends SubsystemBase {
     m_leftMotor = new TalonFX(IDConstants.leftDriveMotorID);
     m_rightMotor = new TalonFX(IDConstants.rightDriveMotorID);
 
-    m_leftMotor.setInverted(false);
-    m_rightMotor.setInverted(true);
+    m_leftMotor.setInverted(true);
+    m_rightMotor.setInverted(false);
     try {
       m_config = new ReplanningConfig(true, true);
     } catch (Exception e) {

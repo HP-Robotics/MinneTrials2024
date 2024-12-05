@@ -35,7 +35,7 @@ public final class Constants {
   }
 
   public static class IntakeConstants {
-    public static final double intakeSpeed = 0.1;
+    public static final double intakeSpeed = 0.2;
   }
 
   public static class ShooterConstants {

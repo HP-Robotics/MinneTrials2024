@@ -72,7 +72,7 @@ public class RobotContainer {
             * Math.signum(m_driveJoystick.getRawAxis(ControllerConstants.DriverLeftAxis));
       }, () -> {
         return 0.5 * Math.pow(m_driveJoystick.getRawAxis(ControllerConstants.DriverRightAxis), 2)
-            * Math.signum(m_driveJoystick.getRawAxis(ControllerConstants.DriverLeftAxis));
+            * Math.signum(m_driveJoystick.getRawAxis(ControllerConstants.DriverRightAxis));
       });
       m_driveSubsystem.setDefaultCommand(drive);
       // Turn to april tag button
