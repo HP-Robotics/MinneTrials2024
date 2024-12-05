@@ -47,6 +47,7 @@ public final class Constants {
     public static final double kWheelRadius = 5;
     public static final double driveGearRatio = 5;
     public static final double slowSpeedMultiplier = 0.3;
+    public static final double autoSpeed = 0.5;
   }
 
   public static class LimelightConstants {

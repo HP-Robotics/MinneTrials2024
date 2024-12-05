@@ -132,4 +132,7 @@ public class DriveSubsystem extends SubsystemBase {
     return ticksToMeters(m_rightMotor.getRotorPosition().getValue());
   }
 
+  public void driveStraight() {
+    drive(DriveConstants.autoSpeed, DriveConstants.autoSpeed);
+  }
 }

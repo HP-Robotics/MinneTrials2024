@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.SubsystemConstants;
+import frc.robot.commands.Autos;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.fireCommandDotEdu;
 import frc.robot.commands.ShooterCommand;
@@ -78,7 +79,7 @@ public class RobotContainer {
       // Turn to april tag button
       m_driveJoystick.button(ControllerConstants.turnToAprilTagButtonID)
           .whileTrue(new TurnToAprilTagCommand(m_limelightSubsystem, m_driveSubsystem, m_opJoystick));
-      m_driveJoystick.button(3).onTrue(new InstantCommand(() -> {
+      m_driveJoystick.button(9).onTrue(new InstantCommand(() -> {
         m_driveSubsystem.m_slowMode = !m_driveSubsystem.m_slowMode;
       }));
     }
@@ -92,6 +93,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
+    return Autos.DriveForwardShoot(m_driveSubsystem, m_shooterSubsystem);
   }
 }
