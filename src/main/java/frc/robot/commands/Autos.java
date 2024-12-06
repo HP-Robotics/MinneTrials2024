@@ -18,10 +18,11 @@ public class Autos {
                 new ShooterCommand(m_shooterSubsystem));
 
     }
+
     public static Command DriveForwardShoot(DriveSubsystem m_driveSubsystem, ShooterSubsystem m_shooterSubsystem) {
         return new SequentialCommandGroup(
-            new InstantCommand(() -> m_driveSubsystem.driveStraight(), m_driveSubsystem),
-            new WaitCommand(3).withTimeout(2.0),
-            new ShooterCommand(m_shooterSubsystem));
+                new InstantCommand(() -> m_driveSubsystem.driveStraight(), m_driveSubsystem),
+                new WaitCommand(1.0).withTimeout(0.5),
+                new ShooterCommand(m_shooterSubsystem));
     }
 }

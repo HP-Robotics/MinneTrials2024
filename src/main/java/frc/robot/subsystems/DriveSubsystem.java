@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.ReplanningConfig;
 
@@ -36,9 +37,11 @@ public class DriveSubsystem extends SubsystemBase {
   public DriveSubsystem() {
     m_leftMotor = new TalonFX(IDConstants.leftDriveMotorID);
     m_rightMotor = new TalonFX(IDConstants.rightDriveMotorID);
+    m_leftMotor.setNeutralMode(NeutralModeValue.Brake);
+    m_rightMotor.setNeutralMode(NeutralModeValue.Brake);
 
-    m_leftMotor.setInverted(true);
-    m_rightMotor.setInverted(false);
+    m_leftMotor.setInverted(false);
+    m_rightMotor.setInverted(true);
     try {
       m_config = new ReplanningConfig(true, true);
     } catch (Exception e) {
