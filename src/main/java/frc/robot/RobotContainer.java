@@ -88,14 +88,14 @@ public class RobotContainer {
       // Turn to april tag button
       m_driveJoystick.button(ControllerConstants.turnToAprilTagButtonID)
           .whileTrue(new TurnToAprilTagCommand(m_limelightSubsystem, m_driveSubsystem, m_opJoystick));
-      m_driveJoystick.button(9).onTrue(new InstantCommand(() -> {
+      m_driveJoystick.button(6).onTrue(new InstantCommand(() -> {
         m_driveSubsystem.m_slowMode = !m_driveSubsystem.m_slowMode;
       }));
     }
 
     if (SubsystemConstants.useCANdle) {
       m_opJoystick.button(5).whileTrue(new RunCommand(m_CANdleSubsystem::incrementAnimation, m_CANdleSubsystem));
-      m_opJoystick.button(6).whileTrue(new RunCommand(m_CANdleSubsystem::decrementAnimation, m_CANdleSubsystem));
+      m_opJoystick.button(11).whileTrue(new RunCommand(m_CANdleSubsystem::decrementAnimation, m_CANdleSubsystem));
       m_opJoystick.button(7).onTrue(m_CANdleSubsystem.IntakeLights());
       m_opJoystick.button(7).onFalse(m_CANdleSubsystem.LightsOut());
     }
