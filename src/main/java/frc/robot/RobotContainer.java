@@ -91,6 +91,10 @@ public class RobotContainer {
       m_driveJoystick.button(6).onTrue(new InstantCommand(() -> {
         m_driveSubsystem.m_slowMode = !m_driveSubsystem.m_slowMode;
       }));
+      m_driveJoystick.button(ControllerConstants.invertMotorsButtonID).onTrue(new InstantCommand(() -> {
+        m_driveSubsystem.m_leftMotor.setInverted(false);
+        m_driveSubsystem.m_rightMotor.setInverted(true);
+      }));
     }
 
     if (SubsystemConstants.useCANdle) {
@@ -102,6 +106,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return Autos.DriveForwardShoot(m_driveSubsystem, m_shooterSubsystem);
+    return Autos.DriveForwardShoot(m_driveSubsystem, m_shooterSubsystem, m_intakeSubsystem);
   }
 }

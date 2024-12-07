@@ -40,8 +40,8 @@ public class DriveSubsystem extends SubsystemBase {
     m_leftMotor.setNeutralMode(NeutralModeValue.Brake);
     m_rightMotor.setNeutralMode(NeutralModeValue.Brake);
 
-    m_leftMotor.setInverted(false);
-    m_rightMotor.setInverted(true);
+    m_leftMotor.setInverted(true);
+    m_rightMotor.setInverted(false);
     try {
       m_config = new ReplanningConfig(true, true);
     } catch (Exception e) {
