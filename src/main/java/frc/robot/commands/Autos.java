@@ -25,7 +25,7 @@ public class Autos {
             IntakeSubsystem m_intakeSubsystem) {
         return new SequentialCommandGroup(
                 new InstantCommand(() -> m_driveSubsystem.driveStraight(), m_driveSubsystem),
-                new WaitCommand(2.0).withTimeout(0.5),
+                new WaitCommand(1.0),
                 new InstantCommand(() -> m_driveSubsystem.drive(0, 0), m_driveSubsystem),
                 new SequentialCommandGroup(
                         new InstantCommand(() -> {
