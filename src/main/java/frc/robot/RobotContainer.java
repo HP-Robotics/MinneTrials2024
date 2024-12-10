@@ -78,10 +78,10 @@ public class RobotContainer {
     if (SubsystemConstants.useDrive) {
       DriveCommand drive = new DriveCommand(m_driveSubsystem, () -> {
         // TODO: Make the 0.5 a constant
-        return 0.5 * Math.pow(m_driveJoystick.getRawAxis(ControllerConstants.DriverLeftAxis), 2)
+        return 0.25 * Math.pow(m_driveJoystick.getRawAxis(ControllerConstants.DriverLeftAxis), 2)
             * Math.signum(m_driveJoystick.getRawAxis(ControllerConstants.DriverLeftAxis));
       }, () -> {
-        return 0.5 * Math.pow(m_driveJoystick.getRawAxis(ControllerConstants.DriverRightAxis), 2)
+        return 0.25 * Math.pow(m_driveJoystick.getRawAxis(ControllerConstants.DriverRightAxis), 2)
             * Math.signum(m_driveJoystick.getRawAxis(ControllerConstants.DriverRightAxis));
       });
       m_driveSubsystem.setDefaultCommand(drive);
