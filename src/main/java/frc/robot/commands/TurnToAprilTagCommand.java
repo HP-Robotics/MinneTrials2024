@@ -16,8 +16,10 @@ public class TurnToAprilTagCommand extends Command {
   private LimelightSubsystem m_subsystem;
   private DriveSubsystem m_driveSubsystem;
   private CommandJoystick m_joystick;
+  private boolean aprilTagSeen = false;
+  private double targetAngle;
 
-  PIDController turnPID = new PIDController(0.02, 0, 0);
+  PIDController turnPID = new PIDController(0.008, 0, 0);
 
   /** Creates a new TurnToAprilTagCommand. */
   public TurnToAprilTagCommand(LimelightSubsystem subsystem, DriveSubsystem driveSubsystem, CommandJoystick joystick) {
@@ -31,17 +33,22 @@ public class TurnToAprilTagCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    m_driveSubsystem.m_gyro.reset();
+    aprilTagSeen = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (m_subsystem.tv == 1) {
-      if (m_subsystem.m_targetAprilTagID == 0 || m_subsystem.m_targetAprilTagID == 5) {
-        double speed = turnPID.calculate(m_subsystem.tx, 0);
-        m_driveSubsystem.m_leftMotor.set(speed);
-        m_driveSubsystem.m_rightMotor.set(-speed);
-      }
+    if (m_subsystem.tv == 1 && (m_subsystem.m_targetAprilTagID == 0 || m_subsystem.m_targetAprilTagID == 7)) {
+      aprilTagSeen = true;
+      targetAngle = m_driveSubsystem.m_gyro.getRotation2d().getDegrees() - m_subsystem.tx + 10;
+    }
+    if (aprilTagSeen) {
+      double speed = turnPID.calculate(m_driveSubsystem.m_gyro.getRotation2d().getDegrees(), targetAngle);
+      m_driveSubsystem.m_leftMotor.set(speed);
+      m_driveSubsystem.m_rightMotor.set(-speed);
+      System.out.println(m_driveSubsystem.m_gyro.getRotation2d().getDegrees());
       if (Math.abs(m_subsystem.tx) < LimelightConstants.turnToAprilTagAllowableError) {
         m_joystick.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0.5);
       } else {
